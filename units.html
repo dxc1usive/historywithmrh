@@ -4,26 +4,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Units</title>
+  <title>APUSH Course Units</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    iframe {
-      width: 100%;
-      height: 90vh;
-      border: none;
+    #units-content {
+      padding: 20px;
+      font-family: 'Georgia', serif;
+    }
+    #units-content h2 {
+      margin-top: 20px;
+      color: #2e5a87;
+    }
+    #units-content p {
+      line-height: 1.6;
+    }
+    button.back {
+      margin: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
     }
   </style>
+  <script>
+    async function loadAPNotes() {
+      try {
+        const resp = await fetch('https://api.allorigins.win/raw?url=https://www.apnotes.net/ap-14e.html');
+        const text = await resp.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const mainContent = doc.querySelector('body');
+        document.getElementById('units-content').innerHTML = mainContent.innerHTML;
+      } catch (error) {
+        document.getElementById('units-content').innerHTML = "<p>Failed to load content. Please try again later.</p>";
+      }
+    }
+    window.addEventListener('DOMContentLoaded', loadAPNotes);
+  </script>
 </head>
 <body>
   <header>
-    <h1>Course Units</h1>
+    <h1>APUSH Course Units</h1>
   </header>
   <main>
-<div style="margin: 20px;">
-  <button onclick="window.history.back()" style="padding: 10px 20px; font-size: 1em;">← Back</button>
-</div>
-
-    <iframe src="https://www.apnotes.net/ap-14e.html"></iframe>
+    <div style='margin: 20px;'>
+      <button class="back" onclick='window.history.back()'>← Back</button>
+    </div>
+    <div id="units-content">
+      <p>Loading course units…</p>
+    </div>
   </main>
 </body>
 </html>
