@@ -2,54 +2,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>APUSH Course Units</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <style>
-    #units-content {
-      padding: 20px;
-      font-family: 'Georgia', serif;
+    .desktop-only {
+      display: block;
     }
-    #units-content h2 {
-      margin-top: 20px;
-      color: #2e5a87;
+    .mobile-only {
+      display: none;
+      text-align: center;
+      margin: 20px;
     }
-    #units-content p {
-      line-height: 1.6;
+    @media (max-width: 768px) {
+      .desktop-only {
+        display: none;
+      }
+      .mobile-only {
+        display: block;
+      }
     }
-    button.back {
+    iframe {
+      width: 100%;
+      height: 90vh;
+      border: none;
+    }
+    .back-btn {
       margin: 20px;
       padding: 10px 20px;
       font-size: 1em;
     }
   </style>
-  <script>
-    async function loadAPNotes() {
-      try {
-        const resp = await fetch('https://api.allorigins.win/raw?url=https://www.apnotes.net/ap-14e.html');
-        const text = await resp.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const mainContent = doc.querySelector('body');
-        document.getElementById('units-content').innerHTML = mainContent.innerHTML;
-      } catch (error) {
-        document.getElementById('units-content').innerHTML = "<p>Failed to load content. Please try again later.</p>";
-      }
-    }
-    window.addEventListener('DOMContentLoaded', loadAPNotes);
-  </script>
 </head>
 <body>
   <header>
     <h1>APUSH Course Units</h1>
   </header>
   <main>
-    <div style='margin: 20px;'>
-      <button class="back" onclick='window.history.back()'>← Back</button>
+    <div>
+      <button class="back-btn" onclick="window.history.back()">← Back</button>
     </div>
-    <div id="units-content">
-      <p>Loading course units…</p>
+    <div class="desktop-only">
+      <iframe src="https://www.apnotes.net/ap-14e.html" title="APNotes Content"></iframe>
+    </div>
+    <div class="mobile-only">
+      <p>This section doesn't work well on mobile devices.</p>
+      <p>
+        <a href="https://www.apnotes.net/ap-14e.html" target="_blank" style="font-size: 1.2em; text-decoration: underline; color: #2e5a87;">
+          Tap here to open the APNotes in a new tab →
+        </a>
+      </p>
     </div>
   </main>
 </body>
