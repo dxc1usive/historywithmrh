@@ -7,15 +7,31 @@
   <title>HISTORYwithMRH</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .hero-animation {
+      text-align: center;
+      background-color: #f5f0e1;
+      padding: 30px;
+      animation: fadeIn 2s ease-in-out;
+    }
+    .hero-animation img {
+      max-width: 300px;
+      height: auto;
+      margin-top: 10px;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+  </style>
 </head>
 <body>
   <header>
     <h1>HISTORYwithMRH</h1>
-    <p>Where the Past Meets the Present. Learn It. Live It. Link It.</p>
   </header>
-  <div class="hero">
-    <h1>Welcome to Your Historical Journey</h1>
-    <p>Explore U.S. History by Unit, Decade, and Primary Source</p>
+  <div class="hero-animation">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Signing_of_the_Constitution.jpg/640px-Signing_of_the_Constitution.jpg" alt="Founding Fathers">
+    <p>Explore America’s Story — One Chapter at a Time</p>
   </div>
   <nav>
     <a href="units.html">Units</a>
