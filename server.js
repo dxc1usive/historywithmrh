@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const url = require('url');
 const crypto = require('crypto');
 const querystring = require('querystring');
 
@@ -77,16 +78,19 @@ function handleSession(req, res) {
 }
 
 const server = http.createServer((req, res) => {
-  if (req.method === 'POST' && req.url === '/login') {
+  const parsed = url.parse(req.url);
+  const pathname = parsed.pathname;
+
+  if (req.method === 'POST' && pathname === '/login') {
     handleLogin(req, res);
-  } else if (req.url === '/logout') {
+  } else if (pathname === '/logout') {
     handleLogout(req, res);
-  } else if (req.url === '/session') {
+  } else if (pathname === '/session') {
     handleSession(req, res);
-  } else if (req.url === '/login') {
+  } else if (pathname === '/login') {
     serveFile(res, path.join(__dirname, 'login.html'), 'text/html');
   } else {
-    let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+    let filePath = path.join(__dirname, pathname === '/' ? 'index.html' : pathname);
     const ext = path.extname(filePath).toLowerCase();
     const types = {
       '.html': 'text/html',
