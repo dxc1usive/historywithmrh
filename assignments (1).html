@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assignments</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .back-btn {
+      margin: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+    }
+    .assignment {
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+    }
+    .assignment h3 {
+      margin: 0;
+    }
+    .assignment p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Assignments</h1>
+  </header>
+  <main>
+    <button class="back-btn" onclick="window.history.back()">← Back</button>
+    <div id="assignments-container">
+      <p>Loading assignments...</p>
+    </div>
+  </main>
+  <script>
+    async function fetchAssignments() {
+      const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvXvy8Y8j4SKTGmgOTnuPNfKf2ZR0UThzEQ5LcUXw6HHtdvnY3JQdMxFmvyU0MjjF84O_i7hZ4Btf1/pub?output=csv";
+
+      const response = await fetch(sheetURL);
+      const data = await response.text();
+      const rows = data.split("\n").slice(1); // Skip headers
+
+      const container = document.getElementById("assignments-container");
+      container.innerHTML = "";
+
+      rows.forEach(row => {
+        const [title, description, dueDate, dueTime] = row.split(",");
+        if (title && dueDate && dueTime) {
+          const div = document.createElement("div");
+          div.className = "assignment";
+          div.innerHTML = `
+            <h3>${title}</h3>
+            <p><strong>Due:</strong> ${dueDate} at ${dueTime}</p>
+            <p>${description}</p>
+          `;
+          container.appendChild(div);
+        }
+      });
+    }
+
+    fetchAssignments();
+  </script>
+</body>
+</html>
