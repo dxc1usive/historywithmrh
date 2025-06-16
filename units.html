@@ -6,23 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>APUSH Course Units</title>
   <link rel="stylesheet" href="style.css" />
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.innerWidth <= 768) {
+        window.location.href = "https://www.apnotes.net/ap-14e.html";
+      }
+    });
+  </script>
   <style>
-    .desktop-only {
-      display: block;
-    }
-    .mobile-only {
-      display: none;
-      text-align: center;
-      margin: 20px;
-    }
-    @media (max-width: 768px) {
-      .desktop-only {
-        display: none;
-      }
-      .mobile-only {
-        display: block;
-      }
-    }
     iframe {
       width: 100%;
       height: 90vh;
@@ -43,17 +34,7 @@
     <div>
       <button class="back-btn" onclick="window.history.back()">← Back</button>
     </div>
-    <div class="desktop-only">
-      <iframe src="https://www.apnotes.net/ap-14e.html" title="APNotes Content"></iframe>
-    </div>
-    <div class="mobile-only">
-      <p>This section doesn't work well on mobile devices.</p>
-      <p>
-        <a href="https://www.apnotes.net/ap-14e.html" target="_blank" style="font-size: 1.2em; text-decoration: underline; color: #2e5a87;">
-          Tap here to open the APNotes in a new tab →
-        </a>
-      </p>
-    </div>
+    <iframe src="https://www.apnotes.net/ap-14e.html" title="APNotes Content"></iframe>
   </main>
 </body>
 </html>
