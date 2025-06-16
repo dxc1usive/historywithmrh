@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Login</h1>
+  <form method="POST" action="/login">
+    <label for="email">School Email:</label>
+    <input type="email" id="email" name="email" required>
+    <button type="submit">Login</button>
+  </form>
+  <div style="color:red;font-weight:bold">
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('error')) {
+        document.write('Only Wyoming Area school emails are allowed.');
+      }
+    </script>
+  </div>
+</body>
+</html>
