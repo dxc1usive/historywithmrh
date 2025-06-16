@@ -6,6 +6,12 @@ const querystring = require('querystring');
 
 const sessions = {};
 
+function isLoggedIn(req) {
+  const cookies = parseCookies(req);
+  const sid = cookies.sid;
+  return sid && sessions[sid];
+}
+
 function serveFile(res, filePath, contentType) {
   fs.readFile(filePath, (err, data) => {
     if (err) {
