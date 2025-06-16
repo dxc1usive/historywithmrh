@@ -1,79 +1,56 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Open+Sans&display=swap');
-
 body {
-    font-family: 'Open Sans', sans-serif;
-    background: linear-gradient(to right, #fdf6e3, #e0d4b7);
-    color: #333;
-    margin: 0;
-    padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background: url('parchment.jpg') repeat;
+  margin: 0;
+  color: #1a1a1a;
 }
 
 header {
-    background: #7b3f00;
-    color: #fff8dc;
-    padding: 1.5em;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  background-color: #001f3f;
+  color: gold;
+  padding: 20px;
+  text-align: center;
 }
 
-header h1 {
-    font-family: 'Russo One', sans-serif;
-    font-size: 2.5em;
-    margin: 0;
-    letter-spacing: 1px;
+.hero {
+  text-align: center;
+  background-color: #f5f0e1;
+  padding: 30px;
 }
 
-nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 1em 0 0 0;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5em;
 }
 
-nav li {
-    margin: 0 15px;
+nav {
+  background-color: #f5f0e1;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 nav a {
-    color: #ffeb3b;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
+  text-decoration: none;
+  color: #001f3f;
+  font-weight: bold;
+  margin: 5px 10px;
 }
 
-nav a:hover {
-    color: #fff;
-}
-
-main {
-    padding: 2em;
-    max-width: 900px;
-    margin: auto;
-}
-
-main h2 {
-    font-family: 'Russo One', sans-serif;
-    color: #7b3f00;
-}
-
-section.quote {
-    background-color: #fff;
-    border-left: 5px solid #7b3f00;
-    padding: 1em;
-    margin-bottom: 2em;
-    font-style: italic;
+.quote {
+  background: rgba(255,255,255,0.9);
+  border-top: 1px solid #ccc;
+  font-style: italic;
+  text-align: center;
+  padding: 10px;
 }
 
 footer {
-    background-color: #7b3f00;
-    color: white;
-    text-align: center;
-    padding: 1em;
-    margin-top: 3em;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+  background-color: #001f3f;
+  color: gold;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9em;
 }
