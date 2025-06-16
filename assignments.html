@@ -14,8 +14,7 @@
       padding: 10px 20px;
     }
     .back-btn {
-      padding: 10px 20px;
-      font-size: 1em;
+       margin-right: 10px;
     }
     .status-select {
       font-size: 1em;
@@ -42,7 +41,7 @@
   </header>
   <main>
     <div class="top-bar">
-      <button class="back-btn" onclick="window.history.back()">← Back</button>
+      <button class="back-btn btn" onclick="window.history.back()">← Back</button>
       <select id="statusFilter" class="status-select" onchange="filterAssignments()">
         <option value="all">Show All</option>
         <option value="todo">To Do</option>
