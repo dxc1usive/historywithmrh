@@ -1,43 +1,79 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Open+Sans&display=swap');
+
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f4f9;
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(to right, #fdf6e3, #e0d4b7);
     color: #333;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: #2d3e50;
-    color: white;
-    padding: 1em;
+    background: #7b3f00;
+    color: #fff8dc;
+    padding: 1.5em;
     text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-family: 'Russo One', sans-serif;
+    font-size: 2.5em;
+    margin: 0;
+    letter-spacing: 1px;
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
+    margin: 1em 0 0 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav li {
-    display: inline;
     margin: 0 15px;
 }
 
 nav a {
     color: #ffeb3b;
     text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #fff;
 }
 
 main {
     padding: 2em;
+    max-width: 900px;
+    margin: auto;
+}
+
+main h2 {
+    font-family: 'Russo One', sans-serif;
+    color: #7b3f00;
+}
+
+section.quote {
+    background-color: #fff;
+    border-left: 5px solid #7b3f00;
+    padding: 1em;
+    margin-bottom: 2em;
+    font-style: italic;
 }
 
 footer {
-    background-color: #2d3e50;
+    background-color: #7b3f00;
     color: white;
     text-align: center;
     padding: 1em;
-    position: fixed;
+    margin-top: 3em;
+    position: relative;
     bottom: 0;
     width: 100%;
 }
