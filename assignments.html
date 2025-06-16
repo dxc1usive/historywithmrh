@@ -29,7 +29,7 @@
       margin: 0;
     }
     .assignment p {
-      margin: 5px 0;
+       margin: 5px 0;
     }
     .hidden {
       display: none;
@@ -54,6 +54,8 @@
     </div>
   </main>
   <script>
+    let assignmentsData = [];
+
     async function fetchAssignments() {
       const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvXvy8Y8j4SKTGmgOTnuPNfKf2ZR0UThzEQ5LcUXw6HHtdvnY3JQdMxFmvyU0MjjF84O_i7hZ4Btf1/pub?output=csv";
 
@@ -64,6 +66,7 @@
       const now = new Date();
       const container = document.getElementById("assignments-container");
       container.innerHTML = "";
+      assignmentsData = [];
 
       rows.forEach((row) => {
         const [title, description, dueDate, dueTime] = row.split(",");
@@ -80,8 +83,12 @@
             <p>${description}</p>
           `;
           container.appendChild(div);
+          assignmentsData.push({ element: div, dueDateTime, status });
         }
       });
+
+      updateAssignmentStatuses();
+      filterAssignments();
     }
 
     function filterAssignments() {
@@ -97,7 +104,23 @@
       });
     }
 
+    function updateAssignmentStatuses() {
+      const now = new Date();
+      assignmentsData.forEach(item => {
+        if (item.status === "todo" && item.dueDateTime <= now) {
+          item.status = "complete";
+          item.element.classList.remove("todo");
+          item.element.classList.add("complete");
+          item.element.setAttribute("data-status", "complete");
+        }
+      });
+    }
+
     fetchAssignments();
+    setInterval(() => {
+      updateAssignmentStatuses();
+      filterAssignments();
+    }, 60000);
   </script>
 </body>
 </html>
