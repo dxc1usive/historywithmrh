@@ -54,3 +54,9 @@ footer {
   padding: 20px;
   font-size: 0.9em;
 }
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
