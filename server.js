@@ -97,6 +97,11 @@ const server = http.createServer((req, res) => {
       '.jpeg': 'image/jpeg',
       '.svg': 'image/svg+xml'
     };
+     if (ext === '.html' && path.basename(filePath) !== 'login.html' && !isLoggedIn(req)) {
+      res.writeHead(302, { 'Location': '/login' });
+      res.end();
+      return;
+    }
     const contentType = types[ext] || 'text/plain';
     fs.access(filePath, fs.constants.F_OK, err => {
       if (err) {
