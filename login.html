@@ -13,13 +13,21 @@
     <input type="email" id="email" name="email" required>
     <button type="submit">Login</button>
   </form>
-  <div style="color:red;font-weight:bold">
-    <script>
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('error')) {
-        document.write('Only Wyoming Area school emails are allowed.');
-      }
-    </script>
-  </div>
+    <div id="errorMsg" style="color:red;font-weight:bold"></div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error')) {
+      const msg = 'Only Wyoming Area school emails are allowed. This window will close.';
+      document.getElementById('errorMsg').textContent = msg;
+      setTimeout(() => {
+        try {
+          window.open('', '_self');
+          window.close();
+        } catch (e) {
+          // Ignore if browser prevents closing
+        }
+      }, 2000);
+    }
+  </script>
 </body>
 </html>

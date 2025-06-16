@@ -1,9 +1,9 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const url = require('url');
 const crypto = require('crypto');
 const querystring = require('querystring');
+const url = require('url');
 
 const sessions = {};
 
@@ -13,13 +13,21 @@ function isLoggedIn(req) {
   return sid && sessions[sid];
 }
 
-function serveFile(res, filePath, contentType) {
+function serveFile(res, filePath, contentType, status = 200) {
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      res.writeHead(404, {'Content-Type': 'text/plain'});
-      res.end('Not found');
+    const notFoundPath = path.join(__dirname, '404.html');
+      fs.readFile(notFoundPath, (nfErr, nfData) => {
+        if (nfErr) {
+          res.writeHead(404, {'Content-Type': 'text/plain'});
+          res.end('Not found');
+        } else {
+          res.writeHead(404, {'Content-Type': 'text/html'});
+          res.end(nfData);
+        }
+      });
     } else {
-      res.writeHead(200, {'Content-Type': contentType});
+      res.writeHead(status, {'Content-Type': contentType});
       res.end(data);
     }
   });
@@ -109,8 +117,7 @@ const server = http.createServer((req, res) => {
     const contentType = types[ext] || 'text/plain';
     fs.access(filePath, fs.constants.F_OK, err => {
       if (err) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('Not found');
+        serveFile(res, path.join(__dirname, '404.html'), 'text/html', 404);
       } else {
         serveFile(res, filePath, contentType);
       }
