@@ -14,28 +14,32 @@ function setDailyQuote() {
 
 document.addEventListener("DOMContentLoaded", setDailyQuote);
 
-async function checkSession() {
-    try {
-        const response = await fetch('/session');
-        const data = await response.json();
-        const link = document.getElementById('loginLink');
-        const messageEl = document.getElementById('loginMessage');
-        if (data.loggedIn) {
-            if (link) {
-                link.textContent = 'Logout';
-                link.href = '/logout';
-            }
-            if (messageEl) messageEl.textContent = '';
-        } else {
-            if (link) {
-                link.textContent = 'Login';
-                link.href = '/login';
-            }
-            if (messageEl) messageEl.textContent = "This is for Hizzy's students only";
-        }
-    } catch (e) {
-        console.error('Session check failed', e);
+function checkSession() {
+    if (typeof updateLoginUI === 'function') {
+        updateLoginUI();
     }
 }
 
 document.addEventListener('DOMContentLoaded', checkSession);
+
+
+// Simple slideshow functionality for the home page with fade effect
+function initSlideshow() {
+    const slides = document.querySelectorAll('.slide');
+    if (!slides.length) return;
+    let index = 0;
+
+    slides.forEach((s, i) => {
+        s.classList.toggle('active', i === 0);
+    });
+
+    function next() {
+        slides[index].classList.remove('active');
+        index = (index + 1) % slides.length;
+        slides[index].classList.add('active');
+    }
+
+    setInterval(next, 5000);
+}
+
+document.addEventListener('DOMContentLoaded', initSlideshow);
