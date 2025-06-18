@@ -21,12 +21,15 @@
       to {opacity: 1; transform: translateY(0);}
     }
   </style>
+  <script src="auth.js"></script>
 </head>
 <body>
   <header>
-    <h1>HISTORYwithMRH</h1>
-     <a id="loginLink" href="/login">Login</a>
-    <div id="loginMessage" style="font-weight:bold;color:red"></div>
+    <h1 class="site-title">HISTORYwithMRH</h1>
+    <div class="auth-container">
+      <a id="loginLink" href="/login">Login</a>
+      <div id="loginMessage" class="login-message"></div>
+    </div>
   </header>
   <div class="hero">
     <h1>Hizzy History</h1>
@@ -38,10 +41,15 @@
     <a href="resources.html">Resources</a>
     <a href="calendar.html">Calendar</a>
     <a href="assignments.html">Assignments</a>
+    <a href="contact.html">About Me</a>
   </nav>
+  <div id="reminder-box">
+    <h2>Upcoming Assignments</h2>
+    <ul id="reminder-list"></ul>
+  </div>
   <div class="slideshow">
     <div class="slide">
-      <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1500&q=80" alt="Colonial America">
+      <img src="https://th.bing.com/th/id/OIP.YT-s4wdnQM_Xr2omsPntGwHaEK?w=328&h=184&c=7&r=0&o=7&pid=1.7&rm=3" alt="Colonial America">
       <div class="caption">
         <h2>Colonial America</h2>
         <p>Early settlements and the birth of the colonies.</p>
@@ -101,7 +109,6 @@
   <footer>
     Contact: chizynski@wyomingarea.org | GitHub | &copy; 2025 HISTORYwithMRH
   </footer>
-  <script src="auth.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

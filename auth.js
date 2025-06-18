@@ -34,7 +34,5 @@ function logout() {
   window.location.href = 'login.html';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  updateLoginUI();
-  requireLogin();
-});
+document.addEventListener('DOMContentLoaded', updateLoginUI);
+requireLogin();

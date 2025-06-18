@@ -50,7 +50,7 @@ function handleLogin(req, res) {
   req.on('data', chunk => body += chunk);
   req.on('end', () => {
     const params = querystring.parse(body);
-    const email = params.email || '';
+    const email = (params.email || '').toLowerCase();
     if (email.endsWith('@wyomingarea.org')) {
       const sid = crypto.randomBytes(16).toString('hex');
       sessions[sid] = { email };
@@ -95,7 +95,7 @@ const server = http.createServer((req, res) => {
     handleLogout(req, res);
   } else if (pathname === '/session') {
     handleSession(req, res);
-  } else if (pathname === '/login') {
+  } else if (pathname === '/login' || pathname === '/login.html') {
     serveFile(res, path.join(__dirname, 'login.html'), 'text/html');
   } else {
     let filePath = path.join(__dirname, pathname === '/' ? 'index.html' : pathname);
@@ -110,7 +110,7 @@ const server = http.createServer((req, res) => {
       '.svg': 'image/svg+xml'
     };
      if (ext === '.html' && path.basename(filePath) !== 'login.html' && !isLoggedIn(req)) {
-      res.writeHead(302, { 'Location': '/login' });
+      res.writeHead(302, { 'Location': '/login.html' });
       res.end();
       return;
     }
