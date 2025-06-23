@@ -54,13 +54,26 @@
     </div>
   </main>
   <script>
+    function parseCSVRow(row) {
+      row = row.trim();
+      const cells = row.match(/("[^"]*"|[^,]+)/g) || [];
+      return cells.map(c => c.trim().replace(/^"|"$/g, '').replace(/""/g, '"'));
+    }
     let assignmentsData = [];
 
     async function fetchAssignments() {
       const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvXvy8Y8j4SKTGmgOTnuPNfKf2ZR0UThzEQ5LcUXw6HHtdvnY3JQdMxFmvyU0MjjF84O_i7hZ4Btf1/pub?output=csv";
+ let data = '';
+      try {
+        const response = await fetch(sheetURL);
+        if (!response.ok) throw new Error('Request failed');
+        data = await response.text();
+      } catch (_e) {
+        // Fallback to local data when offline
+        const local = await fetch('assignments.csv');
+        data = await local.text();
+      }
 
-      const response = await fetch(sheetURL);
-      const data = await response.text();
       const rows = data.split("\n").slice(1); // Skip header row
 
       const now = new Date();
@@ -69,11 +82,15 @@
       assignmentsData = [];
 
       rows.forEach((row) => {
-        const [title, description, dueDate, dueTime] = row.split(',').map(c => c.trim());
+        const [title, description, dueDate, dueTime] = parseCSVRow(row);
         if (title && dueDate && dueTime) {
+          const time = dueTime.replace(/(am|pm)$/i, ' $1');
           let dueDateTime = new Date(`${dueDate} ${dueTime}`);
           if (isNaN(dueDateTime)) {
             dueDateTime = new Date(`${dueDate}T${dueTime}:00`);
+          }
+          if (isNaN(dueDateTime)) {
+            return;
           }
           const status = dueDateTime <= now ? 'complete' : 'todo';
 

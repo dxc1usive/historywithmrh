@@ -152,7 +152,28 @@ img {
 img:hover {
   transform: scale(1.05);
 }
+/* Upcoming assignments list on the home page */
+#upcoming-section {
+  margin: 20px auto;
+  max-width: 800px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
+#upcoming-section h2 {
+  margin-top: 0;
+}
+
+#upcomingAssignments {
+  list-style: none;
+  padding-left: 0;
+}
+
+#upcomingAssignments li {
+  margin: 5px 0;
+}
 
 /* Slideshow styles */
 .slideshow {

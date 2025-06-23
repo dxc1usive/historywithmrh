@@ -48,25 +48,44 @@ function initSlideshow() {
 
 document.addEventListener('DOMContentLoaded', initSlideshow);
 
+// Basic CSV row parser that respects quoted commas
+function parseCSVRow(row) {
+    row = row.trim();
+    const cells = row.match(/("[^"]*"|[^,]+)/g) || [];
+    return cells.map(c => c.trim().replace(/^"|"$/g, '').replace(/""/g, '"'));
+}
+
 // Load a short list of upcoming assignments on the home page
 async function loadUpcomingAssignments() {
     const list = document.getElementById('upcomingAssignments');
     if (!list) return;
 
+    // clear any placeholder text while we fetch new data
+    list.innerHTML = '';
+
     const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRvXvy8Y8j4SKTGmgOTnuPNfKf2ZR0UThzEQ5LcUXw6HHtdvnY3JQdMxFmvyU0MjjF84O_i7hZ4Btf1/pub?output=csv';
 
     try {
-        const res = await fetch(sheetURL);
-        const text = await res.text();
+        let text = '';
+        try {
+            const res = await fetch(sheetURL);
+            if (!res.ok) throw new Error('Request failed');
+            text = await res.text();
+        } catch (_e) {
+            // Fallback to local file when remote fetch fails (e.g. offline)
+            const local = await fetch('assignments.csv');
+            text = await local.text();
+        }
         const rows = text.split('\n').slice(1);
         const now = new Date();
         const upcoming = [];
 
         rows.forEach(row => {
-            const [title,, dueDate, dueTime] = row.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+            const [title,, dueDate, dueTime] = parseCSVRow(row);
             if (title && dueDate && dueTime) {
-                let dt = new Date(`${dueDate} ${dueTime}`);
-                if (isNaN(dt)) dt = new Date(`${dueDate}T${dueTime}`);
+                const time = dueTime.replace(/(am|pm)$/i, ' $1');
+                let dt = new Date(`${dueDate} ${time}`);
+                if (isNaN(dt)) dt = new Date(`${dueDate}T${time}`);
                 if (!isNaN(dt) && dt > now) {
                     upcoming.push({ title, dt });
                 }
@@ -88,6 +107,7 @@ async function loadUpcomingAssignments() {
             });
         }
     } catch (e) {
+        console.error('loadUpcomingAssignments failed', e);
         list.innerHTML = '<li>Error loading assignments</li>';
     }
 }

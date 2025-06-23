@@ -107,7 +107,8 @@ const server = http.createServer((req, res) => {
       '.png': 'image/png',
       '.jpg': 'image/jpeg',
       '.jpeg': 'image/jpeg',
-      '.svg': 'image/svg+xml'
+      '.svg': 'image/svg+xml',
+      '.csv': 'text/csv'
     };
      if (ext === '.html' && path.basename(filePath) !== 'login.html' && !isLoggedIn(req)) {
       res.writeHead(302, { 'Location': '/login.html' });
