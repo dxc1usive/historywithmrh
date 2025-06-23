@@ -8,8 +8,12 @@ const quotes = [
 
 function setDailyQuote() {
     const today = new Date().getDate();
-    const quote = quotes[today % quotes.length];
-    document.getElementById("dailyQuote").innerText = quote;
+    const q = quotes[today % quotes.length];
+    const el = document.getElementById("dailyQuote");
+    if (el) {
+        el.innerHTML = `<p class="quote-text">&ldquo;${q.text}&rdquo;</p>` +
+                       `<p class="quote-author">&mdash; ${q.author}</p>`;
+    }
 }
 
 document.addEventListener("DOMContentLoaded", setDailyQuote);
@@ -44,50 +48,48 @@ function initSlideshow() {
 
 document.addEventListener('DOMContentLoaded', initSlideshow);
 
-// Fetch upcoming assignments and show them in the reminder box on the home page
-async function loadReminders() {
-    const box = document.getElementById('reminder-list');
-    if (!box) return;
+// Load a short list of upcoming assignments on the home page
+async function loadUpcomingAssignments() {
+    const list = document.getElementById('upcomingAssignments');
+    if (!list) return;
 
-    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvXvy8Y8j4SKTGmgOTnuPNfKf2ZR0UThzEQ5LcUXw6HHtdvnY3JQdMxFmvyU0MjjF84O_i7hZ4Btf1/pub?output=csv";
-    let rows = [];
+    const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRvXvy8Y8j4SKTGmgOTnuPNfKf2ZR0UThzEQ5LcUXw6HHtdvnY3JQdMxFmvyU0MjjF84O_i7hZ4Btf1/pub?output=csv';
 
     try {
-        const response = await fetch(sheetURL);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.text();
-        rows = data.split("\n").slice(1);
-    } catch (err) {
-        box.innerHTML = '<li class="error">Unable to load reminders.</li>';
-        return;
-    }
+        const res = await fetch(sheetURL);
+        const text = await res.text();
+        const rows = text.split('\n').slice(1);
+        const now = new Date();
+        const upcoming = [];
 
-    const now = new Date();
-    const events = [];
-
-    rows.forEach(row => {
-        const [title, description, dueDate, dueTime] = row.split(',');
-        if (title && dueDate && dueTime) {
-            const dueDateTime = new Date(`${dueDate}T${dueTime}:00`);
-            if (dueDateTime >= now) {
-                events.push({title, dueDate, dueTime, dueDateTime});
+        rows.forEach(row => {
+            const [title,, dueDate, dueTime] = row.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+            if (title && dueDate && dueTime) {
+                let dt = new Date(`${dueDate} ${dueTime}`);
+                if (isNaN(dt)) dt = new Date(`${dueDate}T${dueTime}`);
+                if (!isNaN(dt) && dt > now) {
+                    upcoming.push({ title, dt });
+                }
             }
+        });
+
+        upcoming.sort((a,b) => a.dt - b.dt);
+        list.innerHTML = '';
+        const shown = upcoming.slice(0,3);
+        if (!shown.length) {
+            list.innerHTML = '<li>No upcoming assignments</li>';
+        } else {
+            shown.forEach(item => {
+                const li = document.createElement('li');
+                const date = item.dt.toLocaleDateString();
+                const time = item.dt.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+                li.textContent = `${item.title} - Due ${date} ${time}`;
+                list.appendChild(li);
+            });
         }
-    });
-
-    events.sort((a, b) => a.dueDateTime - b.dueDateTime);
-
-    box.innerHTML = '';
-    if (!events.length) {
-        box.innerHTML = '<li>No upcoming assignments.</li>';
-        return;
+    } catch (e) {
+        list.innerHTML = '<li>Error loading assignments</li>';
     }
-
-    events.slice(0, 5).forEach(ev => {
-        const li = document.createElement('li');
-        li.textContent = `${ev.title} – ${ev.dueDate} ${ev.dueTime}`;
-        box.appendChild(li);
-    });
 }
 
-document.addEventListener('DOMContentLoaded', loadReminders);
+document.addEventListener('DOMContentLoaded', loadUpcomingAssignments);

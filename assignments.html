@@ -43,10 +43,10 @@
   <main>
     <div class="top-bar">
       <button class="back-btn btn" onclick="window.history.back()">← Back</button>
-      <select id="statusFilter" class="status-select" onchange="filterAssignments()">
-        <option value="all">Show All</option>
+      <select id="statusFilter" class="status-select" onchange="updateAssignmentStatuses(); filterAssignments();">
         <option value="todo">To Do</option>
         <option value="complete">Complete</option>
+        <option value="all">Show All</option>
       </select>
     </div>
     <div id="assignments-container">
@@ -69,10 +69,13 @@
       assignmentsData = [];
 
       rows.forEach((row) => {
-        const [title, description, dueDate, dueTime] = row.split(",");
+        const [title, description, dueDate, dueTime] = row.split(',').map(c => c.trim());
         if (title && dueDate && dueTime) {
-          const dueDateTime = new Date(`${dueDate}T${dueTime}:00`);
-          const status = dueDateTime < now ? "complete" : "todo";
+          let dueDateTime = new Date(`${dueDate} ${dueTime}`);
+          if (isNaN(dueDateTime)) {
+            dueDateTime = new Date(`${dueDate}T${dueTime}:00`);
+          }
+          const status = dueDateTime <= now ? 'complete' : 'todo';
 
           const div = document.createElement("div");
           div.className = `assignment ${status}`;
@@ -92,14 +95,15 @@
     }
 
     function filterAssignments() {
-      const filter = document.getElementById("statusFilter").value;
-      const assignments = document.querySelectorAll(".assignment");
+      updateAssignmentStatuses();
+      const filter = document.getElementById('statusFilter').value;
+      const assignments = document.querySelectorAll('.assignment');
       assignments.forEach(assignment => {
         const status = assignment.getAttribute("data-status");
-        if (filter === "all" || filter === status) {
-          assignment.classList.remove("hidden");
+        if (filter === 'all' || filter === status) {
+          assignment.classList.remove('hidden');
         } else {
-          assignment.classList.add("hidden");
+          assignment.classList.add('hidden');
         }
       });
     }
